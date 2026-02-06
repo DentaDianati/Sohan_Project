@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Point3D?>
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<StackPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.denta.sohanadmin.HomeController">
+   <children>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <BorderPane prefHeight="700.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <top>
+                  <AnchorPane prefHeight="0.0" prefWidth="1200.0" BorderPane.alignment="CENTER" />
+               </top>
+               <right>
+                  <AnchorPane prefHeight="600.0" prefWidth="232.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <AnchorPane layoutX="-8.0" layoutY="-1.0" prefHeight="604.0" prefWidth="240.0" style="-fx-background-color: #341E09;" AnchorPane.bottomAnchor="-3.0" AnchorPane.leftAnchor="-8.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-1.0">
+                           <children>
+
+                              <Label layoutX="63.0" layoutY="175.0" text="خوش آمدید!" textFill="#c09626">
+                                 <font>
+                                    <Font name="Vazir Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="98.0" layoutY="136.0" text="مدیر" textFill="#c09626">
+                                 <font>
+                                    <Font name="Vazir Bold" size="26.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="ir_home" layoutX="150.0" layoutY="274.0" mnemonicParsing="false" onAction="#setHomePage" prefHeight="56.0" prefWidth="75.0" style="-fx-background-color: #341E09;" text="خانه" textFill="WHITE">
+                                 <font>
+                                    <Font name="Vazir Light" size="20.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="ir_post" layoutX="125.0" layoutY="330.0" mnemonicParsing="false" onAction="#setPostPage" prefHeight="49.0" prefWidth="100.0" style="-fx-background-color: #341E09;" text="محصول" textFill="WHITE">
+                                 <font>
+                                    <Font name="Vazir Light" size="20.0" />
+                                 </font>
+                                 <rotationAxis>
+                                    <Point3D />
+                                 </rotationAxis>
+                              </Button>
+                              <Button fx:id="ir_shop" layoutX="117.0" layoutY="380.0" mnemonicParsing="false" onAction="#setBuyPage" prefHeight="49.0" prefWidth="108.0" style="-fx-background-color: #341E09;" text="سفارشات" textFill="WHITE">
+                                 <font>
+                                    <Font name="Vazir Light" size="20.0" />
+                                 </font>
+                                 <rotationAxis>
+                                    <Point3D />
+                                 </rotationAxis>
+                              </Button>
+                              <Line endX="100.0" layoutX="120.0" layoutY="330.0" startX="-43.5" stroke="#ffffff5b">
+                                 <rotationAxis>
+                                    <Point3D />
+                                 </rotationAxis></Line>
+                              <Line endX="100.0" layoutX="120.0" layoutY="381.0" startX="-43.5" stroke="#ffffff5a">
+                                 <rotationAxis>
+                                    <Point3D />
+                                 </rotationAxis></Line>
+                              <Button fx:id="ir_exit" layoutX="26.0" layoutY="520.0" mnemonicParsing="false" onAction="#exit" prefWidth="190.0" style="-fx-background-color: white;" text="&lt;- خروج">
+                                 <font>
+                                    <Font name="Vazir Bold" size="20.0" />
+                                 </font>
+                              </Button>
+                              <ImageView fitHeight="109.0" fitWidth="107.0" layoutX="68.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@asset/user_ic_b.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+               </right>
+               <center>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <AnchorPane fx:id="h_page" layoutX="590.0" layoutY="231.0" prefHeight="700.0" prefWidth="933.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <AnchorPane layoutX="26.0" layoutY="34.0" prefHeight="155.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 8px; -fx-effect: dropshadow(three-pass-box,gray,5,0,0,0);">
+                                 <children>
+                                    <AnchorPane layoutX="370.0" layoutY="16.0" prefHeight="120.0" prefWidth="300.0" style="-fx-background-color: #341E09; -fx-background-radius: 10px;">
+                                       <children>
+                                          <Label layoutX="120.0" layoutY="14.0" text="موجودی فروشگاه" textFill="WHITE">
+                                             <font>
+                                                <Font name="Vazir Bold" size="24.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="h_total_money" layoutX="36.0" layoutY="56.0" text="0 تومان" textFill="WHITE">
+                                             <font>
+                                                <Font name="Vazir Bold" size="24.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane layoutX="30.0" layoutY="16.0" prefHeight="120.0" prefWidth="300.0" style="-fx-background-color: #341E09; -fx-background-radius: 10px;">
+                                       <children>
+                                          <Label layoutX="110.0" layoutY="10.0" text="محصولات موجود" textFill="WHITE">
+                                             <font>
+                                                <Font name="Vazir Bold" size="24.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="h_total_object" layoutX="54.0" layoutY="60.0" text="0" textFill="WHITE">
+                                             <font>
+                                                <Font name="Vazir Bold" size="24.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="27.0" layoutY="220.0" prefHeight="356.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 8px; -fx-effect: dropshadow(three-pass-box,gray,5,0,0,0);">
+                                 <children>
+                                    <AreaChart fx:id="h_chart" layoutX="56.0" layoutY="12.0" prefHeight="332.0" prefWidth="578.0" title="نمودار درآمد">
+                                      <xAxis>
+                                        <CategoryAxis side="BOTTOM" />
+                                      </xAxis>
+                                      <yAxis>
+                                        <NumberAxis side="LEFT" />
+                                      </yAxis>
+                                    </AreaChart>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="o_page" layoutX="-7.0" layoutY="2.0" prefHeight="600.0" prefWidth="768.0" visible="false" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="-7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="2.0">
+                           <children>
+                              <Button fx:id="o_add" layoutX="505.0" layoutY="279.0" mnemonicParsing="false" onAction="#addPost" prefHeight="25.0" prefWidth="252.0" style="-fx-background-color: #341E09;" text="اضافه" textFill="WHITE">
+                                 <font>
+                                    <Font name="Vazir" size="12.0" />
+                                 </font>
+                              </Button>
+                              <TableView fx:id="o_view" layoutX="18.0" layoutY="14.0" nodeOrientation="RIGHT_TO_LEFT" onMousePressed="#setFiuld" prefHeight="564.0" prefWidth="474.0" style="-fx-background-color: #341E09; -fx-border-color: #c09626; -fx-border-width: 4px; -fx-border-radius: 5px; -fx-background-radius: 8px;">
+                                <columns>
+                                  <TableColumn fx:id="o_v_id" editable="false" prefWidth="93.4342041015625" text="شماره محصول" />
+                                  <TableColumn fx:id="o_v_subject" prefWidth="86.10662841796875" text="نوع محصول" />
+                                    <TableColumn fx:id="o_v_name" prefWidth="82.746826171875" text="نام مخصول" />
+                                    <TableColumn fx:id="o_v_discription" prefWidth="100.753173828125" text="کیفیت محصول" />
+                                    <TableColumn fx:id="o_v_cost" prefWidth="99.71990966796875" text="قیمت محصول" />
+                                </columns>
+                              </TableView>
+                              <Button fx:id="o_change" layoutX="505.0" layoutY="319.0" mnemonicParsing="false" onAction="#updatePost" prefHeight="25.0" prefWidth="252.0" style="-fx-background-color: #341E09;" text="تغییر" textFill="WHITE">
+                                 <font>
+                                    <Font name="Vazir" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="o_delete" layoutX="505.0" layoutY="360.0" mnemonicParsing="false" onAction="#deletePost" prefHeight="25.0" prefWidth="252.0" style="-fx-background-color: #341E09;" text="حذف" textFill="WHITE">
+                                 <font>
+                                    <Font name="Vazir" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="o_clear" layoutX="505.0" layoutY="420.0" mnemonicParsing="false" onAction="#clearPost" prefHeight="25.0" prefWidth="252.0" style="-fx-background-color: #c09626;" text="پاک کردن" textFill="WHITE">
+                                 <font>
+                                    <Font name="Vazir" size="12.0" />
+                                 </font>
+                              </Button>
+                              <AnchorPane layoutX="505.0" layoutY="15.0" prefHeight="237.0" prefWidth="253.0" style="-fx-background-color: white; -fx-background-radius: 8px; -fx-effect: dropshadow(three-pass-box,gray,5,0,0,0);">
+                                 <children>
+                                    <Label layoutX="157.5" layoutY="20.0" text="شماره محصول:">
+                                       <font>
+                                          <Font name="Vazir Medium" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="o_id" alignment="CENTER_RIGHT" layoutX="7.0" layoutY="20.0" prefHeight="25.0" prefWidth="142.0">
+                                       <font>
+                                          <Font name="Vazir Medium" size="11.0" />
+                                       </font></TextField>
+                                    <Label layoutX="170.0" layoutY="70.0" text="نوع محصول:">
+                                       <font>
+                                          <Font name="Vazir Medium" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="o_discription" alignment="CENTER_RIGHT" layoutX="7.0" layoutY="160.0" prefHeight="25.0" prefWidth="142.0">
+                                       <font>
+                                          <Font name="Vazir" size="11.0" />
+                                       </font></TextField>
+                                    <Label layoutX="156.0" layoutY="160.0" text="کیفیت محصول:">
+                                       <font>
+                                          <Font name="Vazir Medium" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="o_name" alignment="CENTER_RIGHT" layoutX="7.0" layoutY="115.0" prefHeight="25.0" prefWidth="142.0">
+                                       <font>
+                                          <Font name="Vazir" size="11.0" />
+                                       </font></TextField>
+                                    <Label layoutX="168.0" layoutY="115.0" text="نام محصول: ">
+                                       <font>
+                                          <Font name="Vazir Medium" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="o_cost" alignment="CENTER_RIGHT" layoutX="7.0" layoutY="198.0" prefHeight="25.0" prefWidth="142.0">
+                                       <font>
+                                          <Font name="Vazir" size="11.0" />
+                                       </font></TextField>
+                                    <Label layoutX="160.0" layoutY="198.0" text="قیمت محصول:">
+                                       <font>
+                                          <Font name="Vazir Medium" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <MenuButton fx:id="o_subject" alignment="CENTER_RIGHT" layoutX="7.0" layoutY="70.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="142.0" text="پسته">
+                                      <items>
+                                        <MenuItem fx:id="o_s_p1" mnemonicParsing="false" onAction="#setMenuP1" text="پسته" />
+                                        <MenuItem fx:id="o_s_p2" mnemonicParsing="false" onAction="#setMenuP2" text="بادام" />
+                                          <MenuItem fx:id="o_s_p3" mnemonicParsing="false" onAction="#setMenuP3" text="زعفران" />
+                                      </items>
+                                       <font>
+                                          <Font name="Vazir Bold" size="11.0" />
+                                       </font>
+                                    </MenuButton>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="b_page" layoutX="170.0" layoutY="200.0" prefHeight="600.0" prefWidth="768.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <TableView fx:id="b_v" layoutX="15.0" layoutY="20.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="558.0" prefWidth="450.0" style="-fx-background-color: #341E09; -fx-border-color: #c09626; -fx-border-width: 4px; -fx-border-radius: 5px; -fx-background-radius: 8px;">
+                                 <columns>
+                                    <TableColumn fx:id="b_v_id" prefWidth="87.06875610351562" text="شماره سفارش" />
+                                    <TableColumn fx:id="b_v_subject" prefWidth="90.09457397460938" text="نام کاربر" />
+                                    <TableColumn fx:id="b_v_name" maxWidth="108.0" prefWidth="105.5" text="شماره مجصول" />
+                                    <TableColumn fx:id="b_v_discription" prefWidth="72.0" text="قیمت" />
+                                    <TableColumn fx:id="b_v_discription1" prefWidth="92.5" text="وضعیت" />
+                                 </columns>
+                              </TableView>
+                              <AnchorPane layoutX="480.0" layoutY="20.0" prefHeight="557.0" prefWidth="270.0" style="-fx-background-color: white; -fx-background-radius: 8px; -fx-effect: dropshadow(three-pass-box,gray,5,0,0,0);">
+                                 <children>
+                                    <Label layoutX="162.0" layoutY="21.0" text="شماره سفارش: ">
+                                       <font>
+                                          <Font name="Vazir Medium" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="b_add" layoutX="9.0" layoutY="150.0" mnemonicParsing="false" onAction="#addOrder" prefHeight="25.0" prefWidth="252.0" style="-fx-background-color: #341E09;" text="اضافه کردن" textFill="WHITE">
+                                       <font>
+                                          <Font name="Vazir" size="12.0" />
+                                       </font>
+                                    </Button>
+                                    <Label layoutX="172.0" layoutY="350.0" text="قیمت کل:">
+                                       <font>
+                                          <Font name="Vazir Medium" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="cost_total" layoutX="38.0" layoutY="346.0" text="0 تومان">
+                                       <font>
+                                          <Font name="Vazir Bold" size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="b_pay" layoutX="10.0" layoutY="394.0" mnemonicParsing="false" onAction="#confirOrder" prefHeight="25.0" prefWidth="252.0" style="-fx-background-color: #008000;" text="تایید" textFill="WHITE">
+                                       <font>
+                                          <Font name="Vazir" size="12.0" />
+                                       </font>
+                                    </Button>
+                                    <Label layoutX="161.0" layoutY="95.0" text="قیمت سفارش: ">
+                                       <font>
+                                          <Font name="Vazir Medium" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="b_cost" layoutX="95.0" layoutY="90.0" text="0 تومان">
+                                       <font>
+                                          <Font name="Vazir Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="163.0" layoutY="59.0" text="شماره محصول: ">
+                                       <font>
+                                          <Font name="Vazir Medium" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="b_product_id" layoutX="142.0" layoutY="60.0" text="0">
+                                       <font>
+                                          <Font name="Vazir Medium" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="147.0" layoutY="318.0" text="تعداد سفارش:">
+                                       <font>
+                                          <Font name="Vazir Medium" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="order_total" layoutX="64.0" layoutY="320.0" text="0">
+                                       <font>
+                                          <Font name="Vazir Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Button fx:id="b_pay1" layoutX="9.0" layoutY="430.0" mnemonicParsing="false" onAction="#disOrder" prefHeight="25.0" prefWidth="252.0" style="-fx-background-color: #ff0000;" text="رد" textFill="WHITE">
+                                       <font>
+                                          <Font name="Vazir" size="12.0" />
+                                       </font>
+                                    </Button>
+                                    <MenuButton fx:id="b_order_id" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="21.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="142.0">
+                                       <font>
+                                          <Font name="Vazir Bold" size="11.0" />
+                                       </font>
+                                    </MenuButton>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+               </center>
+            </BorderPane>
+         </children>
+      </AnchorPane>
+   </children>
+</StackPane>
