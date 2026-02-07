@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<StackPane prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.denta.sohan.SignupController">
+   <children>
+      <AnchorPane fx:id="mainPain" prefHeight="450.0" prefWidth="600.0" scaleShape="false">
+         <children>
+            <AnchorPane layoutY="0" maxHeight="450.0" maxWidth="300.0" minHeight="450.0" minWidth="300.0" prefHeight="450.0" prefWidth="300.0">
+               <children>
+                  <TextField fx:id="signupUsername" alignment="CENTER" focusTraversable="false" layoutX="50.0" layoutY="167.0" prefWidth="200.0" promptText="نام کاربری">
+                     <font>
+                        <Font name="Vazir Medium" size="12.0" />
+                     </font>
+                  </TextField>
+                  <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="115.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@asset/user_ic_w.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="119.0" layoutY="113.0" text="ثبت نام" textFill="#341e09">
+                     <font>
+                        <Font name="Vazir Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <PasswordField fx:id="signupPassword" alignment="CENTER" focusTraversable="false" layoutX="50.0" layoutY="202.0" prefWidth="200.0" promptText="رمز عبور">
+                     <font>
+                        <Font name="Vazir Medium" size="12.0" />
+                     </font>
+                  </PasswordField>
+                  <Button fx:id="signupBtn" layoutX="50.0" layoutY="294.0" mnemonicParsing="false" onAction="#SignupUsers" prefWidth="200.0" style="-fx-background-color: #341E09;" text="ثبت نام" textFill="#c09626">
+                     <font>
+                        <Font name="Vazir Bold" size="14.0" />
+                     </font>
+                  </Button>
+                  <Label fx:id="signupLogin" layoutX="214.0" layoutY="327.0" onMouseClicked="#goLogin" text="ورود -&gt;">
+                     <font>
+                        <Font name="Vazir Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <PasswordField fx:id="signupRPassword" alignment="CENTER" focusTraversable="false" layoutX="50.0" layoutY="239.0" prefHeight="29.0" prefWidth="200.0" promptText="تکرار رمز عبور">
+                     <font>
+                        <Font name="Vazir Medium" size="12.0" />
+                     </font>
+                  </PasswordField>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="300.0" layoutY="0" maxHeight="450.0" maxWidth="300.0" minHeight="450.0" minWidth="300.0" prefHeight="450.0" prefWidth="300.0" style="-fx-background-color: #341E09;">
+               <children>
+                  <ImageView fitHeight="135.0" fitWidth="134.0" layoutX="83.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@asset/logo.jpg" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                  </ImageView>
+                  <Label layoutX="61.0" layoutY="149.0" text="فروشگاه خشکبار سُهَن" textFill="#c09626">
+                     <font>
+                        <Font name="Vazir Bold" size="20.0" />
+                     </font>
+                  </Label>
+               </children></AnchorPane>
+         </children>
+      </AnchorPane>
+   </children>
+</StackPane>
