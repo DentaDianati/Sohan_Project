@@ -169,6 +169,7 @@ public class HomeController {
     private int ct = 0;
     private int ot = 0;
     List<Order> orders = new ArrayList<>();
+    List<Order> os = new ArrayList<>();
 
     //راه اندازی اولیه صفحه ادمین
     @FXML
@@ -179,6 +180,12 @@ public class HomeController {
         o_v_name.setCellValueFactory(new PropertyValueFactory<>("name"));
         o_v_discription.setCellValueFactory(new PropertyValueFactory<>("discription"));
         o_v_cost.setCellValueFactory(new PropertyValueFactory<>("cost"));
+        // وصل کردن ستون ها به ابجت سفارش
+        b_v_id.setCellValueFactory(new PropertyValueFactory<>("order_id"));
+        b_v_subject.setCellValueFactory(new PropertyValueFactory<>("username"));
+        b_v_name.setCellValueFactory(new PropertyValueFactory<>("product_id"));
+        b_v_discription.setCellValueFactory(new PropertyValueFactory<>("cost"));
+        b_v_cost.setCellValueFactory(new PropertyValueFactory<>("status"));
         //برقرار ارتباط با سرور و گرفتن محصولات
         connection = DBConnection.getConnection();
         String req = "SELECT * FROM products WHERE num > 0;";
@@ -207,19 +214,36 @@ public class HomeController {
         while (result.next()) {
             Order order = new Order(
                 // اضافه کردن سفارش
+                result.getString("cost"),
                 result.getString("order_id"),
-                result.getString("username"),
                 result.getString("product_id"),
                 result.getString("status"),
-                result.getString("cost")
+                result.getString("username")
+                
             );
-            b_v.getItems().add(order);
-            // اضافه کردن شماره سفارش به منو و تنظیم آن
-            MenuItem mt = new MenuItem(result.getString("order_id"));
-            mt.setOnAction(e -> {
-                b_order_id.setText(((MenuItem) e.getSource()).getText());
-            });
-            b_order_id.getItems().add(mt);
+            // چک کردن اینکه به سفارشات رسیدگی شده 
+            if(result.getString("status").equals("1")){
+                // تغییر موجودی فروشگاه
+                int money_pay = Integer.parseInt(h_total_money.getText().split(" ")[0]) + Integer.parseInt(result.getString("cost").split(" ")[0]);
+                h_total_money.setText(String.valueOf(money_pay) + " تومان");
+            }else if(result.getString("status").equals("0")){
+                b_v.getItems().add(order);
+                os.add(order);
+                // اضافه کردن شماره سفارش به منو و تنظیم آن
+                MenuItem menuItem = new MenuItem(result.getString("order_id"));
+                menuItem.setOnAction(e -> {
+                    String orderId = ((MenuItem) e.getSource()).getText();
+                    b_order_id.setText(orderId);
+                    Order order1 = os.stream().filter(p -> orderId.equals(p.getOrder_id())).findFirst().orElse(null);
+                    b_product_id.setText(order1.getProduct_id());
+                    b_cost.setText(order1.getCost());
+
+                
+
+                });
+                b_order_id.getItems().add(menuItem);
+            }
+
         }
         
     }
@@ -440,21 +464,32 @@ public class HomeController {
     // اضافه کردن سفارش برای تایید یا رد
     public void addOrder(){
         // گرفتن سفارش انتخاب شده و اضافه کردن به لیست
-        Order order = b_v.getSelectionModel().getSelectedItem();
-        // چک کردن سفارش انتخاب شده
-        if(order != null){
-            orders.add(order);
-            // اپدیت متغیر ها و فیلد ها
-            ct += Integer.getInteger(order.getCost());
-            ot++;
-            cost_total.setText(String.valueOf(ct));
-            order_total.setText(String.valueOf(ot));
+        String id = b_order_id.getText();
+        String cost = b_cost.getText();
+        //پیدا کردن ابجکت انتخاب شده در لیست انتخاب شده
+        boolean exist = orders.stream()
+                .anyMatch(p -> p.getOrder_id().equals(id));
+        // چگ گردن تکراری نبودن سفارش
+        if(!exist){
+            // چک کردن سفارش انتخاب شده
+            if(!id.isEmpty()){
+                Order order = os.stream().filter(p -> id.equals(p.getOrder_id())).findFirst().orElse(null);
+                orders.add(order);
+                // اپدیت متغیر ها و فیلد ها
+                ct += Integer.parseInt(order.getCost().split(" ")[0]);
+                ot++;
+                cost_total.setText(String.valueOf(ct) + " تومان");
+                order_total.setText(String.valueOf(ot));
+            }else{
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setContentText("سفارش مورد نظر را انتخاب کنید!");
+                alert.showAndWait();
+            }
         }else{
             Alert alert = new Alert(AlertType.ERROR);
-            alert.setContentText("سفارش مورد نظر را انتخاب کنید!");
+            alert.setContentText("سفارش انتخاب شده تکراری است!");
             alert.showAndWait();
         }
-
     }
     // تایید سفارش ها
     public void confirOrder() throws SQLException{
@@ -467,21 +502,29 @@ public class HomeController {
             for (Order o : orders) {
                 // ارتباط با سرور و تایید 
                 connection = DBConnection.getConnection();
-                var req = "UPDATE orders SET status = 'تایید شده' WHERE products.id = ? ;";
+                var req = "UPDATE orders SET status = '1' WHERE order_id = ? ;";
                 prepard = connection.prepareStatement(req);
                 prepard.setString(1, o.getOrder_id());
+                prepard.execute();
                 // اپدیت حدول و فیلد ها
-                b_v.getItems().stream()
-                .filter(p -> p.getOrder_id().equals(o.getOrder_id()))
-                .findFirst()
-                .ifPresent(p -> {
-                    p.setStatus("تایید شده");
-                });
-                int money_pay = Integer.getInteger(h_total_money.getText()) + ct;
-                h_total_money.setText(String.valueOf(money_pay));
-                // تمیز کردن لیست سفارشات انتخاب شده
-                orders.clear();
+                b_v.getItems().removeIf(p -> 
+                    p.getOrder_id().equals(o.getOrder_id())
+                );
+                b_v.refresh();
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setContentText("سفارش با موفقیت تایید شد!");
+                alert.showAndWait();
+                
             }
+            // تمیز کردن لیست سفارشات انتخاب شده
+            orders.clear();
+            // تمیز کردن فیلتد ها
+            cost_total.setText("0 تومان");
+            order_total.setText("0");
+            int money_pay = Integer.parseInt(h_total_money.getText().split(" ")[0]) + ct;
+            h_total_money.setText(String.valueOf(money_pay) + " تومان");
+            ct = 0;
+            ot = 0;
         }
     }
     // رد سفارش ها
@@ -495,20 +538,29 @@ public class HomeController {
             for (Order o : orders) {
                 // ارتباط با سرور و تایید 
                 connection = DBConnection.getConnection();
-                var req = "UPDATE orders SET status = 'رد شده' WHERE products.id = ? ;";
+                var req = "UPDATE orders SET status = '2' WHERE order_id = ? ;";
                 prepard = connection.prepareStatement(req);
                 prepard.setString(1, o.getOrder_id());
+                prepard.execute();
                 // اپدیت حدول
-                b_v.getItems().stream()
-                .filter(p -> p.getOrder_id().equals(o.getOrder_id()))
-                .findFirst()
-                .ifPresent(p -> {
-                    p.setStatus("رد شده");
-                }); 
-                // تمیز کردن لیست سفارشات انتخاب شده
-                orders.clear();
+                b_v.getItems().removeIf(p -> 
+                    p.getOrder_id().equals(o.getOrder_id())
+                );
+                b_v.refresh();
+                
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setContentText("سفارش با موفقیت رد شد!");
+                alert.showAndWait();
             }
+            // تمیز کردن لیست سفارشات انتخاب شده
+            orders.clear();
+            // تمیز کردن فیلتد ها
+            cost_total.setText("0 تومان");
+            order_total.setText("0");
+            ct = 0;
+            ot = 0;
         }
+
     }
 
 }  

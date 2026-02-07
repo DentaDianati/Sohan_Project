@@ -228,13 +228,13 @@
                         </AnchorPane>
                         <AnchorPane fx:id="b_page" layoutX="170.0" layoutY="200.0" prefHeight="600.0" prefWidth="768.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <TableView fx:id="b_v" layoutX="15.0" layoutY="20.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="558.0" prefWidth="450.0" style="-fx-background-color: #341E09; -fx-border-color: #c09626; -fx-border-width: 4px; -fx-border-radius: 5px; -fx-background-radius: 8px;">
+                              <TableView fx:id="b_v" layoutX="15.0" layoutY="20.0" nodeOrientation="RIGHT_TO_LEFT" onMousePressed="#setFiuldOrder" prefHeight="558.0" prefWidth="450.0" style="-fx-background-color: #341E09; -fx-border-color: #c09626; -fx-border-width: 4px; -fx-border-radius: 5px; -fx-background-radius: 8px;">
                                  <columns>
                                     <TableColumn fx:id="b_v_id" prefWidth="87.06875610351562" text="شماره سفارش" />
                                     <TableColumn fx:id="b_v_subject" prefWidth="90.09457397460938" text="نام کاربر" />
                                     <TableColumn fx:id="b_v_name" maxWidth="108.0" prefWidth="105.5" text="شماره مجصول" />
-                                    <TableColumn fx:id="b_v_discription" prefWidth="72.0" text="قیمت" />
-                                    <TableColumn fx:id="b_v_discription1" prefWidth="92.5" text="وضعیت" />
+                                    <TableColumn fx:id="b_v_discription" prefWidth="99.5" text="قیمت" />
+                                    <TableColumn fx:id="b_v_cost" prefWidth="65.0" text="وضعیت" />
                                  </columns>
                               </TableView>
                               <AnchorPane layoutX="480.0" layoutY="20.0" prefHeight="557.0" prefWidth="270.0" style="-fx-background-color: white; -fx-background-radius: 8px; -fx-effect: dropshadow(three-pass-box,gray,5,0,0,0);">
@@ -269,7 +269,7 @@
                                           <Font name="Vazir Medium" size="14.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="b_cost" layoutX="95.0" layoutY="90.0" text="0 تومان">
+                                    <Label fx:id="b_cost" layoutX="20.0" layoutY="90.0" text="0 تومان">
                                        <font>
                                           <Font name="Vazir Bold" size="18.0" />
                                        </font>
@@ -279,7 +279,7 @@
                                           <Font name="Vazir Medium" size="14.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="b_product_id" layoutX="142.0" layoutY="60.0" text="0">
+                                    <Label fx:id="b_product_id" layoutX="20.0" layoutY="60.0" text="0">
                                        <font>
                                           <Font name="Vazir Medium" size="16.0" />
                                        </font>
