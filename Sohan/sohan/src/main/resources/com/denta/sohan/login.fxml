@@ -57,11 +57,17 @@
                      <font>
                         <Font name="Vazir Bold" size="14.0" />
                      </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </Button>
                   <Label fx:id="loginSignup" layoutX="198.0" layoutY="297.0" onMouseClicked="#goSignup" text="ثبت نام -&gt;">
                      <font>
                         <Font name="Vazir Bold" size="12.0" />
                      </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </Label>
                </children>
             </AnchorPane>

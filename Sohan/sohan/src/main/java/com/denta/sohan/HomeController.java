@@ -1,9 +1,5 @@
 package com.denta.sohan;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.prefs.Preferences;
 
-import com.google.gson.Gson;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,8 +17,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
@@ -111,12 +104,9 @@ public class HomeController {
     private Connection connection;
     private PreparedStatement prepard;
     private ResultSet result;
-    private int total_order = 0;
-    private int total_cost = 0;
-    List<Product> ps = new ArrayList<>();
-    List<Product> all_products = new ArrayList<>();
+    private int total_order, total_cost = 0;
+    List<Product> ps,all_products = new ArrayList<>();
     private String user;
-    Gson gson = new Gson();
     // تنظیمات اولیه
     @FXML
     public void initialize() throws SQLException {
@@ -130,7 +120,7 @@ public class HomeController {
         o_v_name.setCellValueFactory(new PropertyValueFactory<>("name"));
         o_v_discription.setCellValueFactory(new PropertyValueFactory<>("discription"));
         o_v_cost.setCellValueFactory(new PropertyValueFactory<>("cost"));
-                // برقرار ارتباط با سرور با SQL (صفحه محصولات)
+        // برقرار ارتباط با سرور با SQL (صفحه محصولات)
         connection = DBConnection.getConnection();
         String req2 = "SELECT * FROM products WHERE num > 0;";
         prepard = connection.prepareStatement(req2);
@@ -228,7 +218,7 @@ public class HomeController {
             GridPane.setMargin(order_label, new Insets(10, 0, 10, 0));
         }
         // اضافه کردن سبد خرید از حافظه
-        ps.addAll(loadObjects());
+        ps.addAll(ProductManager.loadProducts());
         for (Product product : ps) {
             total_cost += Integer.parseInt(product.getCost().split(" ")[0]);
             total_order++;
@@ -247,40 +237,6 @@ public class HomeController {
         o_discription.setText(o_view.getSelectionModel().getSelectedItem().getDiscription());
         o_cost.setText(o_view.getSelectionModel().getSelectedItem().getCost() + " تومان");
     }
-    // ذخیره سبد خرید در حافظه
-    public void saveProduct() {
-        // ساخت یا باز کردن فایل json
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("basket.json"))) {
-            // پیمایش در لیست سبد خرید و ذخیره در فایل
-            for (Product p : ps) {
-                bw.write(gson.toJson(p));
-                bw.newLine();
-            }
-        }catch (IOException e) {
-            // هشدار
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setContentText("مشکلی در خواندن حافظه پیش آمد!");
-            alert.showAndWait();
-        }
-    }
-    // خواندن سبد خرید از حافظه
-    public List<Product> loadObjects() {
-        List<Product> list = new ArrayList<>();
-        // خواندن فایل
-        try (BufferedReader br = new BufferedReader(new FileReader("basket.json"))) {
-            String line;
-            // تا زمانی که فایل تمام شود محصولات را به سبد اضافه می کند
-            while ((line = br.readLine()) != null) {
-                list.add(gson.fromJson(line, Product.class));
-            }
-        } catch (IOException e) {
-            // هشدار
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setContentText("مشکلی در خواندن حافظه پیش آمد!");
-            alert.showAndWait();
-        }
-        return list;
-    }
     // اضافه کردن محصول به سبد خرید
     public void addBasket(){
         // گرفتن اطلاعات محصول
@@ -292,9 +248,7 @@ public class HomeController {
         // چک کردن خالی نبودن اطلاعات
         if(id.isEmpty() || name.isEmpty() || discription.isEmpty() || cost.isEmpty()){
             // هشدار
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setContentText("محصول را انتخاب کنید!");
-            alert.showAndWait();
+            AlertSohan.error("محصول را انتخاب کنید!");
         }else{
             // گرفتن محصول از لیست سبد خرید
             boolean exist = ps.stream()
@@ -305,7 +259,7 @@ public class HomeController {
                 Product product = new Product(cost, discription, id, name, subject);
                 ps.add(product);
                 // ذخیره در حافظع
-                saveProduct();
+                ProductManager.saveProduct(ps);
                 // به روزرسانی پارامتر ها و فیلتد ها
                 total_order++;
                 total_cost += Integer.parseInt(cost.split(" ")[0]);
@@ -313,9 +267,7 @@ public class HomeController {
                 o_cost_total.setText(String.valueOf(total_cost) + " تومان");
             }else{
                 // هشدار
-                Alert alert = new Alert(AlertType.ERROR);
-                alert.setContentText("محصول در سبدخرید موجود است!");
-                alert.showAndWait();
+                AlertSohan.error("محصول در سبدخرید موجود است!");
             }
         }
 
@@ -330,9 +282,7 @@ public class HomeController {
         // چک کردن خالی نبودن اطلاعات
         if(id.isEmpty() || name.isEmpty() || discription.isEmpty() || cost.isEmpty()){
             // هشدار
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setContentText("محصول را انتخاب کنید!");
-            alert.showAndWait();
+            AlertSohan.error("محصول را انتخاب کنید!");
         }else{
             // گرفتن محصول از لیست سبد خرید
             boolean exist = ps.stream()
@@ -342,7 +292,7 @@ public class HomeController {
                 // حذف از لیست سبد
                 ps.removeIf(p -> p.getId().equals(id));
                 // حذف از حافظه
-                saveProduct();
+                ProductManager.saveProduct(ps);
                 // به روزرسانی پارامتر ها و فیلتد ها
                 total_order--;
                 total_cost -= Integer.parseInt(cost.split(" ")[0]);
@@ -350,9 +300,7 @@ public class HomeController {
                 o_cost_total.setText(String.valueOf(total_cost) + " تومان");
             }else{
                 // هشدار
-                Alert alert = new Alert(AlertType.ERROR);
-                alert.setContentText("محصول در سبدخرید موجود نیست!");
-                alert.showAndWait();
+                AlertSohan.error("محصول در سبدخرید موجود نیست!");
             }
         }
     }
@@ -361,9 +309,7 @@ public class HomeController {
         // چک کردن پر بودن سبد خرید
         if(ps.isEmpty()){
             // هشدار
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setContentText("ُسبد خرید خالی است!");
-            alert.showAndWait();
+            AlertSohan.error("سبد خرید خالی است!");
         }else{
             // ساخت درخواست ها برای ارسال به سرور
             String req = "INSERT INTO orders (order_id, username, product_id, cost) VALUES ";
@@ -405,7 +351,7 @@ public class HomeController {
                 // خالی کردن لیست سبد خرید
                 ps.clear();
                 // خالی کردن سبد خرید در حافظه
-                saveProduct();
+                ProductManager.saveProduct(ps);
                 // به روزرسانی پارامتر ها
                 order.setText(String.valueOf(Integer.parseInt(order.getText()) + total_order));
                 order_0.setText(String.valueOf(Integer.parseInt(order_0.getText()) + total_order));
@@ -414,14 +360,10 @@ public class HomeController {
                 o_cost_total.setText("0 نومان");
                 o_order_total.setText("0");
                 // خبر
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setContentText("ُخربد با موفقیت انجام شد!");
-                alert.showAndWait();
+                AlertSohan.info("پرداخت با موفقیت انجام شد!");
             }else{
                 // هشدار
-                Alert alert = new Alert(AlertType.ERROR);
-                alert.setContentText("خرید شکست خورد. لطفا دوباره امتحان کنید!");
-                alert.showAndWait();
+                AlertSohan.error("خرید شکست خورد، لطفا دوباره امتحان کنید!");
             }
         }  
     }

@@ -41,11 +41,17 @@
                      <font>
                         <Font name="Vazir Bold" size="14.0" />
                      </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </Button>
                   <Label fx:id="signupLogin" layoutX="214.0" layoutY="327.0" onMouseClicked="#goLogin" text="ورود -&gt;">
                      <font>
                         <Font name="Vazir Bold" size="12.0" />
                      </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </Label>
                   <PasswordField fx:id="signupRPassword" alignment="CENTER" focusTraversable="false" layoutX="50.0" layoutY="239.0" prefHeight="29.0" prefWidth="200.0" promptText="تکرار رمز عبور">
                      <font>

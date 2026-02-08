@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Point3D?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
@@ -46,6 +47,9 @@
                                  <font>
                                     <Font name="Vazir Light" size="20.0" />
                                  </font>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
                               </Button>
                               <Button fx:id="ir_post" layoutX="113.0" layoutY="330.0" mnemonicParsing="false" onAction="#setPostPage" prefHeight="49.0" prefWidth="112.0" style="-fx-background-color: #341E09;" text="محصولات" textFill="WHITE">
                                  <font>
@@ -54,6 +58,9 @@
                                  <rotationAxis>
                                     <Point3D />
                                  </rotationAxis>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
                               </Button>
                               <Button fx:id="ir_shop" layoutX="117.0" layoutY="380.0" mnemonicParsing="false" onAction="#setBuyPage" prefHeight="49.0" prefWidth="108.0" style="-fx-background-color: #341E09;" text="سفارشات" textFill="WHITE">
                                  <font>
@@ -62,6 +69,9 @@
                                  <rotationAxis>
                                     <Point3D />
                                  </rotationAxis>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
                               </Button>
                               <Line endX="100.0" layoutX="120.0" layoutY="330.0" startX="-43.5" stroke="#ffffff5b">
                                  <rotationAxis>
@@ -75,6 +85,9 @@
                                  <font>
                                     <Font name="Vazir Bold" size="20.0" />
                                  </font>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
                               </Button>
                               <ImageView fitHeight="109.0" fitWidth="107.0" layoutX="68.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -184,6 +197,9 @@
                                        <font>
                                           <Font name="Vazir" size="12.0" />
                                        </font>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
                                     </Button>
                                     <Label layoutX="172.0" layoutY="350.0" text="قیمت کل:">
                                        <font>
@@ -199,6 +215,9 @@
                                        <font>
                                           <Font name="Vazir" size="12.0" />
                                        </font>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
                                     </Button>
                                     <Label layoutX="172.0" layoutY="95.0" text="نوع محصول: ">
                                        <font>
@@ -259,6 +278,9 @@
                                        <font>
                                           <Font name="Vazir" size="12.0" />
                                        </font>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
                                     </Button>
                                  </children>
                               </AnchorPane>
