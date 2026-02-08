@@ -8,15 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.fxml.FXML;
-import javafx.scene.chart.AreaChart;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.Spinner;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -26,26 +21,7 @@ import javafx.scene.layout.AnchorPane;
 
 public class HomeController {
     @FXML
-    private Button b_add;
-
-
-    @FXML
-    private ComboBox<?> b_id;
-
-    @FXML
-    private Spinner<?> b_number;
-
-    @FXML
     private AnchorPane b_page;
-
-    @FXML
-    private Button b_pay;
-
-    @FXML
-    private ComboBox<?> b_subject;
-
-    @FXML
-    private Label b_total;
 
     @FXML
     private TableView<Order> b_v;
@@ -66,9 +42,6 @@ public class HomeController {
     private TableColumn<Order, String> b_v_subject;
 
     @FXML
-    private AreaChart<Product, String> h_chart;
-
-    @FXML
     private AnchorPane h_page;
 
     @FXML
@@ -81,28 +54,7 @@ public class HomeController {
     private Button ir_exit;
 
     @FXML
-    private Button ir_home;
-
-    @FXML
-    private Button ir_post;
-
-    @FXML
-    private Button ir_shop;
-
-    @FXML
-    private Button o_add;
-
-    @FXML
-    private Button o_change;
-
-    @FXML
-    private Button o_clear;
-
-    @FXML
     private TextField o_cost;
-
-    @FXML
-    private Button o_delete;
 
     @FXML
     private TextField o_discription;
@@ -275,23 +227,19 @@ public class HomeController {
         String name = o_name.getText();
         String discription = o_discription.getText();
         String cost = o_cost.getText();
-
         // گرفتن محصول اگر قبلا وارد شده
         boolean exists = o_view.getItems()
             .stream()
             .anyMatch(p -> id.equals(p.getId()));
         // چک کردن اینکه همه فیلد ها پر باشد
         if(id.isEmpty() || name.isEmpty() || discription.isEmpty() || cost.isEmpty()){
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setContentText("همه اطلاعات را وارد کنید!");
-            alert.showAndWait();
+            AlertSohan.error("همه اطلاعات را وارد کنید!");
         }else{
             // چک کردن اینکه محصول تکراری نباشد
             if(!exists){
                 //برقرار کردن ارتباط با سرور و درخواست
                 connection = DBConnection.getConnection();
                 var req = "INSERT INTO products (id, name, subject, discription, cost, num) VALUES (?, ?, ?, ?, ?, ?);";
-
                 prepard = connection.prepareStatement(req);
                 prepard.setString(1, id);
                 prepard.setString(2, name);
@@ -299,7 +247,6 @@ public class HomeController {
                 prepard.setString(4, discription);
                 prepard.setString(5, cost);
                 prepard.setString(6, "100");
-
                 //چک کردن موفقیت درخواست
                 if(!prepard.execute()){
                     //ساخت ابجکت محصول و اضافه کردن به جدول
@@ -315,20 +262,12 @@ public class HomeController {
                     h_total_object.setText(String.valueOf(productCount));
                     
                 }else{
-                    Alert alert = new Alert(AlertType.ERROR);
-                    alert.setContentText("پست کردن شکست خورد. لطفا دوباره امتحان کنید!");
-                    alert.showAndWait();
+                    AlertSohan.error("پست کردن شکست خورد. لطفا دوباره امتحان کنید!");
                 }
             }else{
-                Alert alert = new Alert(AlertType.ERROR);
-                alert.setContentText("شماره محصول موجود می باشد!");
-                alert.showAndWait();
+                AlertSohan.error("شماره محصول موجود می باشد!");
             }
-            
-
         }
-
-        
     }
     // اپدیت کردن محصول در فروشگاه
     public void updatePost() throws SQLException{
@@ -338,16 +277,13 @@ public class HomeController {
         String name = o_name.getText();
         String discription = o_discription.getText();
         String cost = o_cost.getText();
-
         // گرفتن محصول اگر قبلا وارد شده
         boolean exists = o_view.getItems()
             .stream()
             .anyMatch(p -> id.equals(p.getId()));
         // چک کردن محصول انتخاب شده
         if(id.isEmpty()){
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setContentText("شماره محصول را وارد کنید!");
-            alert.showAndWait();
+            AlertSohan.error("شماره محصول را وارد کنید!");
         }else{
             // چک کردن موحود بودن محصول برای تغییر
             if(exists){
@@ -355,7 +291,6 @@ public class HomeController {
                 connection = DBConnection.getConnection();
                 var req = "UPDATE products SET name = ?, subject = ?, discription = ?, cost = ? WHERE products.id = ? ;";
                 prepard = connection.prepareStatement(req);
-                
                 prepard.setString(1, name);
                 prepard.setString(2, subject);
                 prepard.setString(3, discription);
@@ -379,25 +314,14 @@ public class HomeController {
                     o_subject.setText("پسته");
                     o_name.setText("");
                     o_discription.setText("");
-                    o_cost.setText("");
-
-                    
+                    o_cost.setText("");   
                 }else{
-                    Alert alert = new Alert(AlertType.ERROR);
-                    alert.setContentText("تغییر پست شکست خورد. لطفا دوباره امتحان کنید!");
-                    alert.showAndWait();
+                    AlertSohan.error("تغییر پست شکست خورد. لطفا دوباره امتحان کنید!");
                 }
             }else{
-                Alert alert = new Alert(AlertType.ERROR);
-                alert.setContentText("شماره محصول موجود نمی باشد. لطفا دوباره امتحان کنید!");
-                alert.showAndWait();
+                AlertSohan.error("شماره محصول موجود نمی باشد. لطفا دوباره امتحان کنید!");
             }
-            
-
         }
-
-
-        
     }
     // حذف کردن محصول از فروشگاه
     public void deletePost() throws SQLException{
@@ -417,14 +341,11 @@ public class HomeController {
                 productCount--;
                 h_total_object.setText(String.valueOf(productCount));
             }else{
-               Alert alert = new Alert(AlertType.ERROR);
-               alert.setContentText("حذف پست شکست خورد. لطفا دوباره امتحان کنید!");
-               alert.showAndWait();
+               AlertSohan.error("حذف پست شکست خورد. لطفا دوباره امتحان کنید!");
+
             }
         }else{
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setContentText("پست مورد نظر را انتخاب کنید!");
-            alert.showAndWait();
+            AlertSohan.error("پست مورد نظر را انتخاب کنید!");
         }
     }
     //تمیز کردن فیلد ها 
@@ -465,7 +386,6 @@ public class HomeController {
     public void addOrder(){
         // گرفتن سفارش انتخاب شده و اضافه کردن به لیست
         String id = b_order_id.getText();
-        String cost = b_cost.getText();
         //پیدا کردن ابجکت انتخاب شده در لیست انتخاب شده
         boolean exist = orders.stream()
                 .anyMatch(p -> p.getOrder_id().equals(id));
@@ -481,23 +401,17 @@ public class HomeController {
                 cost_total.setText(String.valueOf(ct) + " تومان");
                 order_total.setText(String.valueOf(ot));
             }else{
-                Alert alert = new Alert(AlertType.ERROR);
-                alert.setContentText("سفارش مورد نظر را انتخاب کنید!");
-                alert.showAndWait();
+                AlertSohan.error("سفارش مورد نظر را انتخاب کنید!");
             }
         }else{
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setContentText("سفارش انتخاب شده تکراری است!");
-            alert.showAndWait();
+            AlertSohan.error("سفارش انتخاب شده تکراری است!");
         }
     }
     // تایید سفارش ها
     public void confirOrder() throws SQLException{
         // شک کردن سفارش های انتخاب شده
         if(orders.isEmpty()){
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setContentText("سفارشی رو انتخاب کنید!");
-            alert.showAndWait();
+            AlertSohan.error("سفارشی را انتخاب کنید!");
         }else{
             for (Order o : orders) {
                 // ارتباط با سرور و تایید 
@@ -511,9 +425,7 @@ public class HomeController {
                     p.getOrder_id().equals(o.getOrder_id())
                 );
                 b_v.refresh();
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setContentText("سفارش با موفقیت تایید شد!");
-                alert.showAndWait();
+                AlertSohan.info("سفارش با موفقیت تایید شد!");
                 
             }
             // تمیز کردن لیست سفارشات انتخاب شده
@@ -531,9 +443,7 @@ public class HomeController {
     public void disOrder() throws SQLException{
         // چک کردن سفارش های انتخاب شده
         if(orders.isEmpty()){
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setContentText("سفارشی رو انتخاب کنید!");
-            alert.showAndWait();
+            AlertSohan.error("سفارشی را انتخاب کنید!");
         }else{
             for (Order o : orders) {
                 // ارتباط با سرور و تایید 
@@ -548,9 +458,7 @@ public class HomeController {
                 );
                 b_v.refresh();
                 
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setContentText("سفارش با موفقیت رد شد!");
-                alert.showAndWait();
+                AlertSohan.info("سفارش با موفقیت رد شد!");
             }
             // تمیز کردن لیست سفارشات انتخاب شده
             orders.clear();
@@ -560,7 +468,5 @@ public class HomeController {
             ct = 0;
             ot = 0;
         }
-
     }
-
 }  

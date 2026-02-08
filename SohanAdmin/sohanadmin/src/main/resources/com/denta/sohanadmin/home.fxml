@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Point3D?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.chart.AreaChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -47,6 +48,9 @@
                                  <font>
                                     <Font name="Vazir Light" size="20.0" />
                                  </font>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
                               </Button>
                               <Button fx:id="ir_post" layoutX="125.0" layoutY="330.0" mnemonicParsing="false" onAction="#setPostPage" prefHeight="49.0" prefWidth="100.0" style="-fx-background-color: #341E09;" text="محصول" textFill="WHITE">
                                  <font>
@@ -55,6 +59,9 @@
                                  <rotationAxis>
                                     <Point3D />
                                  </rotationAxis>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
                               </Button>
                               <Button fx:id="ir_shop" layoutX="117.0" layoutY="380.0" mnemonicParsing="false" onAction="#setBuyPage" prefHeight="49.0" prefWidth="108.0" style="-fx-background-color: #341E09;" text="سفارشات" textFill="WHITE">
                                  <font>
@@ -63,6 +70,9 @@
                                  <rotationAxis>
                                     <Point3D />
                                  </rotationAxis>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
                               </Button>
                               <Line endX="100.0" layoutX="120.0" layoutY="330.0" startX="-43.5" stroke="#ffffff5b">
                                  <rotationAxis>
@@ -76,6 +86,9 @@
                                  <font>
                                     <Font name="Vazir Bold" size="20.0" />
                                  </font>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
                               </Button>
                               <ImageView fitHeight="109.0" fitWidth="107.0" layoutX="68.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -144,6 +157,9 @@
                                  <font>
                                     <Font name="Vazir" size="12.0" />
                                  </font>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
                               </Button>
                               <TableView fx:id="o_view" layoutX="18.0" layoutY="14.0" nodeOrientation="RIGHT_TO_LEFT" onMousePressed="#setFiuld" prefHeight="564.0" prefWidth="474.0" style="-fx-background-color: #341E09; -fx-border-color: #c09626; -fx-border-width: 4px; -fx-border-radius: 5px; -fx-background-radius: 8px;">
                                 <columns>
@@ -158,16 +174,25 @@
                                  <font>
                                     <Font name="Vazir" size="12.0" />
                                  </font>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
                               </Button>
                               <Button fx:id="o_delete" layoutX="505.0" layoutY="360.0" mnemonicParsing="false" onAction="#deletePost" prefHeight="25.0" prefWidth="252.0" style="-fx-background-color: #341E09;" text="حذف" textFill="WHITE">
                                  <font>
                                     <Font name="Vazir" size="12.0" />
                                  </font>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
                               </Button>
                               <Button fx:id="o_clear" layoutX="505.0" layoutY="420.0" mnemonicParsing="false" onAction="#clearPost" prefHeight="25.0" prefWidth="252.0" style="-fx-background-color: #c09626;" text="پاک کردن" textFill="WHITE">
                                  <font>
                                     <Font name="Vazir" size="12.0" />
                                  </font>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
                               </Button>
                               <AnchorPane layoutX="505.0" layoutY="15.0" prefHeight="237.0" prefWidth="253.0" style="-fx-background-color: white; -fx-background-radius: 8px; -fx-effect: dropshadow(three-pass-box,gray,5,0,0,0);">
                                  <children>
@@ -248,6 +273,9 @@
                                        <font>
                                           <Font name="Vazir" size="12.0" />
                                        </font>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
                                     </Button>
                                     <Label layoutX="172.0" layoutY="350.0" text="قیمت کل:">
                                        <font>
@@ -263,6 +291,9 @@
                                        <font>
                                           <Font name="Vazir" size="12.0" />
                                        </font>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
                                     </Button>
                                     <Label layoutX="161.0" layoutY="95.0" text="قیمت سفارش: ">
                                        <font>
@@ -298,6 +329,9 @@
                                        <font>
                                           <Font name="Vazir" size="12.0" />
                                        </font>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
                                     </Button>
                                     <MenuButton fx:id="b_order_id" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="21.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="142.0">
                                        <font>
