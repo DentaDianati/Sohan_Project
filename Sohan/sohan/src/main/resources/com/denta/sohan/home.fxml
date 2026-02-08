@@ -89,7 +89,7 @@
                <center>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane fx:id="h_page" layoutX="590.0" layoutY="231.0" prefHeight="700.0" prefWidth="933.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="h_page" layoutX="590.0" layoutY="231.0" prefHeight="700.0" prefWidth="933.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane layoutX="26.0" layoutY="34.0" prefHeight="155.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 8px; -fx-effect: dropshadow(three-pass-box,gray,5,0,0,0);">
                                  <children>
@@ -164,7 +164,7 @@
                         </AnchorPane>
                         <AnchorPane fx:id="o_page" layoutX="-7.0" layoutY="2.0" prefHeight="600.0" prefWidth="768.0" visible="false" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="-7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="2.0">
                            <children>
-                              <TableView fx:id="o_view" layoutX="20.0" layoutY="14.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="564.0" prefWidth="466.0" style="-fx-background-color: #341E09; -fx-border-color: #c09626; -fx-border-width: 4px; -fx-border-radius: 5px; -fx-background-radius: 8px;">
+                              <TableView fx:id="o_view" layoutX="20.0" layoutY="14.0" nodeOrientation="RIGHT_TO_LEFT" onMousePressed="#setFiuld" prefHeight="564.0" prefWidth="466.0" style="-fx-background-color: #341E09; -fx-border-color: #c09626; -fx-border-width: 4px; -fx-border-radius: 5px; -fx-background-radius: 8px;">
                                 <columns>
                                   <TableColumn fx:id="o_v_id" editable="false" prefWidth="93.4342041015625" text="شماره محصول" />
                                   <TableColumn fx:id="o_v_subject" prefWidth="86.10662841796875" text="نوع محصول" />
@@ -264,7 +264,7 @@
                               </AnchorPane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="b_page" layoutX="170.0" layoutY="200.0" prefHeight="600.0" prefWidth="768.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="b_page" layoutX="170.0" layoutY="200.0" prefHeight="600.0" prefWidth="768.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <GridPane fx:id="g_page" layoutY="100.0" prefHeight="500.0" prefWidth="768.0">
                                 <columnConstraints>

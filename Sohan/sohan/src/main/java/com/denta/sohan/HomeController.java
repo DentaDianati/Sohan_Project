@@ -19,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -89,7 +90,7 @@ public class HomeController {
     @FXML
     private Label order_2;
 
-        @FXML
+    @FXML
     private TableColumn<Product, String> o_v_cost;
 
     @FXML
@@ -106,8 +107,7 @@ public class HomeController {
     
     @FXML
     private GridPane g_page;
-
-        
+    // تعریف پارامتر ها
     private Connection connection;
     private PreparedStatement prepard;
     private ResultSet result;
@@ -116,51 +116,64 @@ public class HomeController {
     List<Product> ps = new ArrayList<>();
     List<Product> all_products = new ArrayList<>();
     private String user;
-
-    
-
+    Gson gson = new Gson();
+    // تنظیمات اولیه
     @FXML
     public void initialize() throws SQLException {
-        connection = DBConnection.getConnection();
-        String req1 = "SELECT * FROM orders ORDER BY order_id DESC LIMIT 6;";
-        prepard = connection.prepareStatement(req1);
-        result = prepard.executeQuery();
-        int r = 0;
-        while (result.next()) {
-            String txt = "";
-            if(result.getString("status").equals("0")){
-                txt = result.getString("order_id") + ".- درحال برسی...";
-            }else if(result.getString("status").equals("1")){
-                txt = result.getString("order_id") + ".- تایید شده";
-            }else if(result.getString("status").equals("2")){
-                txt = result.getString("order_id") + ".- رد شده";
-            }
-            
-            Label order_label = new Label(txt);
-            order_label.setFont(Font.font("Vazir Bold", 26));
-            g_page.add(order_label, 0, r++);
-            GridPane.setHalignment(order_label, HPos.CENTER);
-            GridPane.setMargin(order_label, new Insets(10, 0, 10, 0));
-
-        }
-
-
+        // گرفتن نام کاربر از حاقظه
         Preferences prefs = Preferences.userNodeForPackage(App.class);
         user = prefs.get("user",null);
         username.setText(user);
+        // وصل کردن ابجکت محصول به ستون های حدول
+        o_v_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        o_v_subject.setCellValueFactory(new PropertyValueFactory<>("subject"));
+        o_v_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        o_v_discription.setCellValueFactory(new PropertyValueFactory<>("discription"));
+        o_v_cost.setCellValueFactory(new PropertyValueFactory<>("cost"));
+                // برقرار ارتباط با سرور با SQL (صفحه محصولات)
+        connection = DBConnection.getConnection();
+        String req2 = "SELECT * FROM products WHERE num > 0;";
+        prepard = connection.prepareStatement(req2);
+        result = prepard.executeQuery();
+        // پیمایش در محصول ها
+        while (result.next()) {
+            // ساخت محصول
+            Product product = new Product(
+                result.getString("cost"),
+                result.getString("discription"),
+                String.valueOf(result.getInt("id")),
+                result.getString("name"),
+                result.getString("subject")
+            );
+            // اضافه کردن به حدول و لیست محصولات
+            o_view.getItems().add(product);
+            all_products.add(product);
+            // اضافه کردن شماره سفارش ها به منو ایتم ها
+            MenuItem menuItem = new MenuItem(String.valueOf(result.getInt("id")));
+            menuItem.setOnAction(e -> {
+                String orderId = ((MenuItem) e.getSource()).getText();
+                o_id.setText(orderId);
+                Product prod = all_products.stream().filter(p -> orderId.equals(p.getId())).findFirst().orElse(null);
+                o_name.setText(prod.getName());
+                o_subject.setText(prod.getSubject());
+                o_discription.setText(prod.getDiscription());
+                o_cost.setText(prod.getCost() + " تومان");
+            
 
+            });
+            o_id.getItems().add(menuItem);
+        }
+        // برقرار ارتباط با سرور با SQL (شماره سفارشات)
         connection = DBConnection.getConnection();
         String req = "SELECT * FROM orders WHERE username = ?";
         prepard = connection.prepareStatement(req);
         prepard.setString(1, user);
         result = prepard.executeQuery();
-
+        // شماره سفارشات و نوع آن برای صفحه اصلی
         int count = 0;
         int count_0 = 0;
         int count_1 = 0;
-        int count_2 = 0;
-
-            
+        int count_2 = 0;    
         while (result.next()) {
             int s = Integer.parseInt(result.getString("status"));
             switch (s) {
@@ -179,125 +192,127 @@ public class HomeController {
             count++;
  
         }
+        // تنظیم شمارش روی لیبل ها
         order.setText(String.valueOf(count));
         order_0.setText(String.valueOf(count_0));
         order_1.setText(String.valueOf(count_1));
         order_2.setText(String.valueOf(count_2));
-
-        o_v_id.setCellValueFactory(new PropertyValueFactory<>("id"));
-        o_v_subject.setCellValueFactory(new PropertyValueFactory<>("subject"));
-        o_v_name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        o_v_discription.setCellValueFactory(new PropertyValueFactory<>("discription"));
-        o_v_cost.setCellValueFactory(new PropertyValueFactory<>("cost"));
-
-
+        // برقرار ارتباط با سرور با SQL (صفحه سفارشات)
         connection = DBConnection.getConnection();
-        String req2 = "SELECT * FROM products WHERE num > 0;";
-        prepard = connection.prepareStatement(req2);
+        String req1 = "SELECT * FROM orders WHERE username = ? ORDER BY order_id DESC LIMIT 6;";
+        prepard = connection.prepareStatement(req1);
+        prepard.setString(1, user);
         result = prepard.executeQuery();
-        
+        // اضافه کردن سفارشات به صفحه سفارشات
+        int r = 0;
         while (result.next()) {
-            Product product = new Product(
-                result.getString("cost"),
-                result.getString("discription"),
-                String.valueOf(result.getInt("id")),
-                result.getString("name"),
-                result.getString("subject")
-            );
-            o_view.getItems().add(product);
-            all_products.add(product);
-            MenuItem menuItem = new MenuItem(String.valueOf(result.getInt("id")));
-            menuItem.setOnAction(e -> {
-                String orderId = ((MenuItem) e.getSource()).getText();
-                o_id.setText(orderId);
-                Product prod = all_products.stream().filter(p -> orderId.equals(p.getId())).findFirst().orElse(null);
-                o_name.setText(prod.getName());
-                o_subject.setText(prod.getSubject());
-                o_discription.setText(prod.getDiscription());
-                o_cost.setText(prod.getCost() + " تومان");
-            
-
-            });
-            o_id.getItems().add(menuItem);
-
+            String txt = "";
+            switch (result.getString("status")) {
+                case "0":
+                    txt = "محصول شماره " +  result.getString("product_id") + ".- درحال برسی...";
+                    break;
+                case "1":
+                    txt = "محصول شماره " +  result.getString("product_id") + ".- تایید شده";
+                    break;
+                case "2":
+                    txt = "محصول شماره " + result.getString("product_id") + ".- رد شده";
+                    break;
+                default:
+                    break;
+            }
+            // ساخت ابجکت لیبل و ویژگی های آن
+            Label order_label = new Label(txt);
+            order_label.setFont(Font.font("Vazir Bold", 26));
+            g_page.add(order_label, 0, r++);
+            GridPane.setHalignment(order_label, HPos.CENTER);
+            GridPane.setMargin(order_label, new Insets(10, 0, 10, 0));
         }
-        
+        // اضافه کردن سبد خرید از حافظه
         ps.addAll(loadObjects());
         for (Product product : ps) {
             total_cost += Integer.parseInt(product.getCost().split(" ")[0]);
             total_order++;
 
         }
+        // به روزرسانی فیلد ها از حافظه
         o_order_total.setText(String.valueOf(total_order));
         o_cost_total.setText(String.valueOf(total_cost) + " تومان");
-
-        
     }
+    // تنظیم سلکشن جدول
     public void setFiuld(){
+        // مقدار دهی فیلد ها با جدول
         o_id.setText(o_view.getSelectionModel().getSelectedItem().getId());
         o_name.setText(o_view.getSelectionModel().getSelectedItem().getName());
         o_subject.setText(o_view.getSelectionModel().getSelectedItem().getSubject());
         o_discription.setText(o_view.getSelectionModel().getSelectedItem().getDiscription());
-        o_cost.setText(o_view.getSelectionModel().getSelectedItem().getCost());
+        o_cost.setText(o_view.getSelectionModel().getSelectedItem().getCost() + " تومان");
     }
-
-    Gson gson = new Gson();
-
+    // ذخیره سبد خرید در حافظه
     public void saveProduct() {
+        // ساخت یا باز کردن فایل json
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("basket.json"))) {
+            // پیمایش در لیست سبد خرید و ذخیره در فایل
             for (Product p : ps) {
                 bw.write(gson.toJson(p));
                 bw.newLine();
             }
         }catch (IOException e) {
-            e.printStackTrace();
+            // هشدار
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setContentText("مشکلی در خواندن حافظه پیش آمد!");
+            alert.showAndWait();
         }
     }
-
-
+    // خواندن سبد خرید از حافظه
     public List<Product> loadObjects() {
         List<Product> list = new ArrayList<>();
-
+        // خواندن فایل
         try (BufferedReader br = new BufferedReader(new FileReader("basket.json"))) {
             String line;
+            // تا زمانی که فایل تمام شود محصولات را به سبد اضافه می کند
             while ((line = br.readLine()) != null) {
                 list.add(gson.fromJson(line, Product.class));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            // هشدار
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setContentText("مشکلی در خواندن حافظه پیش آمد!");
+            alert.showAndWait();
         }
         return list;
     }
-
+    // اضافه کردن محصول به سبد خرید
     public void addBasket(){
+        // گرفتن اطلاعات محصول
         String id = o_id.getText();
         String subject = o_subject.getText();
         String name = o_name.getText();
         String discription = o_discription.getText();
         String cost = o_cost.getText();
-
-
+        // چک کردن خالی نبودن اطلاعات
         if(id.isEmpty() || name.isEmpty() || discription.isEmpty() || cost.isEmpty()){
+            // هشدار
             Alert alert = new Alert(AlertType.ERROR);
             alert.setContentText("محصول را انتخاب کنید!");
             alert.showAndWait();
         }else{
-            boolean exists = ps.stream()
+            // گرفتن محصول از لیست سبد خرید
+            boolean exist = ps.stream()
                 .anyMatch(p -> p.getId().equals(id));
-            if(!exists){
+            // چک کردن موجود بودن در سبد خرید
+            if(!exist){
+                // ساخت محصول و اضافه کردن به سبد
                 Product product = new Product(cost, discription, id, name, subject);
                 ps.add(product);
+                // ذخیره در حافظع
                 saveProduct();
-                
-                
-                
-
+                // به روزرسانی پارامتر ها و فیلتد ها
                 total_order++;
                 total_cost += Integer.parseInt(cost.split(" ")[0]);
-
                 o_order_total.setText(String.valueOf(total_order));
                 o_cost_total.setText(String.valueOf(total_cost) + " تومان");
             }else{
+                // هشدار
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setContentText("محصول در سبدخرید موجود است!");
                 alert.showAndWait();
@@ -305,119 +320,126 @@ public class HomeController {
         }
 
     }
+    // حذف کردن محصول از سبد خرید
     public void removeBasket(){
+        // گرفتن اطلاعات محصول
         String id = o_id.getText();
         String name = o_name.getText();
         String discription = o_discription.getText();
         String cost = o_cost.getText();
-
-
+        // چک کردن خالی نبودن اطلاعات
         if(id.isEmpty() || name.isEmpty() || discription.isEmpty() || cost.isEmpty()){
+            // هشدار
             Alert alert = new Alert(AlertType.ERROR);
             alert.setContentText("محصول را انتخاب کنید!");
             alert.showAndWait();
         }else{
-            boolean exists = ps.stream()
+            // گرفتن محصول از لیست سبد خرید
+            boolean exist = ps.stream()
                 .anyMatch(p -> p.getId().equals(id));
-            if(exists){
-
+            // چک کردن موجود بودن در سبد خرید
+            if(exist){
+                // حذف از لیست سبد
                 ps.removeIf(p -> p.getId().equals(id));
+                // حذف از حافظه
                 saveProduct();
-                
-
+                // به روزرسانی پارامتر ها و فیلتد ها
                 total_order--;
                 total_cost -= Integer.parseInt(cost.split(" ")[0]);
-
                 o_order_total.setText(String.valueOf(total_order));
                 o_cost_total.setText(String.valueOf(total_cost) + " تومان");
-
             }else{
+                // هشدار
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setContentText("محصول در سبدخرید موجود نیست!");
                 alert.showAndWait();
             }
-
-            
-            
-
         }
-
     }
-
+    // پرداخت
     public void payBasket() throws SQLException{
-
-
+        // چک کردن پر بودن سبد خرید
         if(ps.isEmpty()){
+            // هشدار
             Alert alert = new Alert(AlertType.ERROR);
             alert.setContentText("ُسبد خرید خالی است!");
             alert.showAndWait();
         }else{
-                String req = "INSERT INTO orders (order_id, username, product_id, cost) VALUES ";
-                for (int i = 0; i < total_order; i++) {
-                    if (i > 0) req += ", ";
-                    req += "(null, ?, ?, ?)";
-                }
-
-                PreparedStatement prepard = connection.prepareStatement(req);
-                int paramIndex = 1;
-                for (int i = 0; i < total_order; i++) {
-                    prepard.setString(paramIndex++, user);
-                    prepard.setString(paramIndex++, ps.get(i).getId());
-                    prepard.setString(paramIndex++, ps.get(i).getCost());
-                }
-
-                
-     
-
-                
-
-                if(!prepard.execute()){
-                    for (Product product1 : ps) {
-
-                        String txt = product1.getId() + " درحال برسی.." ;
-                        Label order_label = new Label(txt);
-                        order_label.setFont(Font.font("Vazir Bold", 26));
-                        g_page.add(order_label, 0, 0);
-                    }
-                    ps.clear();
-                    saveProduct();
-                    order.setText(String.valueOf(Integer.parseInt(order.getText()) + total_order));
-                    order_0.setText(String.valueOf(Integer.parseInt(order_0.getText()) + total_order));
-                    total_cost = 0;
-                    total_order = 0;
-                    o_cost_total.setText("0 نومان");
-                    o_order_total.setText("0");
-                    Alert alert = new Alert(AlertType.INFORMATION);
-                    alert.setContentText("ُخربد با موفقیت انجام شد!");
-                    alert.showAndWait();
-
-                    
-                }else{
-                    Alert alert = new Alert(AlertType.ERROR);
-                    alert.setContentText("خرید شکست خورد. لطفا دوباره امتحان کنید!");
-                    alert.showAndWait();
-                }
+            // ساخت درخواست ها برای ارسال به سرور
+            String req = "INSERT INTO orders (order_id, username, product_id, cost) VALUES ";
+            for (int i = 0; i < total_order; i++) {
+                if (i > 0) req += ", ";
+                req += "(null, ?, ?, ?)";
             }
-            
-
-        
-
-        
+            // ثبت اطلاعات بر درخواست
+            prepard = connection.prepareStatement(req);
+            int paramIndex = 1;
+            for (int i = 0; i < total_order; i++) {
+                prepard.setString(paramIndex++, user);
+                prepard.setString(paramIndex++, ps.get(i).getId());
+                prepard.setString(paramIndex++, ps.get(i).getCost());
+            }
+            // چک کردن موقثیت درخواست
+            if(!prepard.execute()){
+                // پیمایش در سبد خرید
+                for (Product product1 : ps) {
+                    // اضافه کردن سفارش ها به سفارشات
+                    String txt = "محصول شماره " +  product1.getId() + ".- درحال برسی..." ;
+                    Label order_label = new Label(txt);
+                    order_label.setFont(Font.font("Vazir Bold", 26));
+                    // همه سفارشات رو یکی بالا بردن
+                    for (Node node : g_page.getChildren()) {
+                        Integer row = GridPane.getRowIndex(node);
+                        GridPane.setRowIndex(node, row == null ? 1 : row + 1);
+                    }
+                    // اگر از 5 تا رد کرد سفارش حذف میشود
+                    g_page.getChildren().removeIf(node -> {
+                        Integer row = GridPane.getRowIndex(node);
+                        return row != null && row >= 6;
+                    });
+                    // اضافه کردن سفارش جدید
+                    g_page.add(order_label, 0, 0);
+                    GridPane.setHalignment(order_label, HPos.CENTER);
+                    GridPane.setMargin(order_label, new Insets(10, 0, 10, 0));
+                }
+                // خالی کردن لیست سبد خرید
+                ps.clear();
+                // خالی کردن سبد خرید در حافظه
+                saveProduct();
+                // به روزرسانی پارامتر ها
+                order.setText(String.valueOf(Integer.parseInt(order.getText()) + total_order));
+                order_0.setText(String.valueOf(Integer.parseInt(order_0.getText()) + total_order));
+                total_cost = 0;
+                total_order = 0;
+                o_cost_total.setText("0 نومان");
+                o_order_total.setText("0");
+                // خبر
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setContentText("ُخربد با موفقیت انجام شد!");
+                alert.showAndWait();
+            }else{
+                // هشدار
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setContentText("خرید شکست خورد. لطفا دوباره امتحان کنید!");
+                alert.showAndWait();
+            }
+        }  
     }
-
+    // خروج از حساب کاربری
     public void exit() throws IOException{
+        // حذف کاربر از حافظه
         Preferences prefs = Preferences.userNodeForPackage(App.class);
         prefs.remove("user");
-
+        // بستن صفحه اصلی
         ir_exit.getScene().getWindow().hide();
+        // رفتن به صفحه ورود
         Parent parent = FXMLLoader.load(getClass().getResource("login.fxml"));
         Stage stage = new Stage();
         Scene scene = new Scene(parent);
         stage.setScene(scene); 
         stage.show();
-
-       
     }
+    //تنظیمات پیمایش بین صفحات
     public void setPostPage(){
         h_page.setVisible(false);
         o_page.setVisible(true);
@@ -433,6 +455,4 @@ public class HomeController {
         o_page.setVisible(false);
         b_page.setVisible(true);
     }
-
-    
 }

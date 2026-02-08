@@ -1,55 +1,45 @@
 package com.denta.sohan;
 
 public class Product {
+    // تعریف پارامتر های محصول
     private String id,subject,name,discription,cost;
-
+    // تعریف کانستراکتور محصول
     public Product(String cost, String discription, String id, String name, String subject) {
         this.cost = cost;
         this.discription = discription;
         this.id = id;
         this.name = name;
         this.subject = subject;
-    }
-
+    }   
+    // تعریف دسترسی به پارامتر های محصول
     public String getId() {
         return id;
     }
-
     public void setId(String id) {
         this.id = id;
     }
-
     public String getSubject() {
         return subject;
     }
-
     public void setSubject(String subject) {
         this.subject = subject;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public String getDiscription() {
         return discription;
     }
-
     public void setDiscription(String discription) {
         this.discription = discription;
     }
-
     public String getCost() {
         return cost;
     }
-
     public void setCost(String cost) {
         this.cost = cost;
     }
-    
-
 }

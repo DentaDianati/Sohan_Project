@@ -17,22 +17,21 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        // پرفتن نام کاربری از حافظه سیستم
         Preferences prefs = Preferences.userNodeForPackage(App.class);
         String user = prefs.get("user",null);
+        // چگ کردن موجود بودن کاربر
         if(user == null){
+            // رفتن به صفحه ورود
             scene = new Scene(loadFXML("login"));
             stage.setScene(scene);
             stage.show();
         }else{
+            // رفتن به صفحه اصلی
             scene = new Scene(loadFXML("home"));
             stage.setScene(scene);
             stage.show();
         }
-        
-    }
-
-    static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
